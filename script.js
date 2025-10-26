@@ -134,27 +134,27 @@ document.addEventListener("DOMContentLoaded", () => {
     window.open("https://chat.openai.com/", "_blank");
   });
 
-  // Générer livrables
+  // Générer livrables sécurisés
   function generateTemplate(l) {
-    // DOCX via Docxtemplater
+    // DOCX simplifié
     if (l.type === "docx") {
-      const content = { plan: l.template.plan || [] };
-      const zip = new PizZip();
-      const doc = new window.docxtemplater(zip, { paragraphLoop:true, linebreaks:true });
-      doc.render(content);
-      const out = doc.getZip().generate({ type:"blob", mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-      saveAs(out, `${l.titre}.docx`);
+      const text = (l.template.plan || []).join("\n\n");
+      const blob = new Blob([text], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${l.titre}.docx`;
+      a.click();
 
-    // PPTX via pptxgenjs
+    // PPTX simplifié
     } else if (l.type === "pptx") {
-      const pptx = new PptxGenJS();
-      (l.template.slides || []).forEach(s => {
-        const slide = pptx.addSlide();
-        slide.addText(s, { x:1, y:1, fontSize:24, color:"363636" });
-      });
-      pptx.writeFile({ fileName: `${l.titre}.pptx` });
+      const pptxContent = (l.template.slides || []).map(s => s + "\n").join("\n");
+      const blob = new Blob([pptxContent], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${l.titre}.pptx`;
+      a.click();
 
-    // XLSX via SheetJS
+    // XLSX
     } else if (l.type === "xlsx") {
       const wb = XLSX.utils.book_new();
       (l.template.sheets || []).forEach(sheetName => {
