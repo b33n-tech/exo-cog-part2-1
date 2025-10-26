@@ -1,37 +1,11 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background: #f4f4f4;
-  color: #333;
-}
-
+body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; color: #333; }
 h1 { color: #222; margin-bottom: 20px; }
 h2 { margin-top: 20px; color: #333; }
 
-.module {
-  background: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-#uploadModule {
-  background: #fffbe6;
-  border: 1px solid #f0a500;
-}
-
-.upload-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#uploadStatus {
-  margin-top: 10px;
-  font-style: italic;
-  color: green;
-}
+.module { background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+#uploadModule { background: #fffbe6; border: 1px solid #f0a500; }
+.upload-container { display: flex; align-items: center; gap: 10px; }
+#uploadStatus { margin-top: 10px; font-style: italic; color: green; }
 
 ul { list-style: none; padding-left: 0; }
 li { margin: 5px 0; }
@@ -40,30 +14,13 @@ table { width: 100%; border-collapse: collapse; margin-top: 10px; }
 th, td { border: 1px solid #ddd; padding: 8px; }
 th { background: #f0a500; color: white; text-align: left; }
 
-button {
-  background: #f0a500;
-  color: white;
-  border: none;
-  padding: 7px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s;
-}
+button { background: #f0a500; color: white; border: none; padding: 7px 12px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
 button:hover { opacity: 0.85; }
 
-.mail-actions {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
+.mail-actions { margin-top: 10px; display: flex; gap: 10px; align-items: center; }
 input[type="file"] { padding: 5px; }
 
-@media(max-width: 600px){
-  .upload-container, .mail-actions {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+@media(max-width:600px){
+  .upload-container, .mail-actions { flex-direction: column; align-items: flex-start; }
   table, th, td { font-size: 14px; }
 }
