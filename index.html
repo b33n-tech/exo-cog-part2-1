@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exo-Cog Partie 2</title>
+<link rel="stylesheet" href="style.css">
+
+<!-- DOCX -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.6.0/docx.min.js"></script>
+
+<!-- PPTX -->
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.10.0/dist/pptxgen.min.js"></script>
+
+<!-- XLSX -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+</head>
+<body>
+
+<h1>Exo-Cog – Partie 2</h1>
+
+<!-- Upload JSON -->
+<div class="module" id="uploadModule">
+  <h2>Charger JSON LLM</h2>
+  <div class="upload-container">
+    <input type="file" id="uploadJson" accept=".json">
+    <button id="loadBtn">Charger JSON</button>
+  </div>
+  <p id="uploadStatus"></p>
+</div>
+
+<!-- Jalons -->
+<div class="module" id="jalonsModule">
+  <h2>Jalons & Sous-actions</h2>
+  <ul id="jalonsList"></ul>
+</div>
+
+<!-- Messages -->
+<div class="module" id="messagesModule">
+  <h2>Messages / Emails</h2>
+  <table id="messagesTable">
+    <thead>
+      <tr><th>À traiter</th><th>Destinataire</th><th>Sujet</th><th>Texte</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div class="mail-actions">
+    <select id="mailPromptSelect">
+      <option value="1">Template formel</option>
+      <option value="2">Template amical</option>
+    </select>
+    <button id="generateMailBtn">Générer Mail GPT</button>
+  </div>
+</div>
+
+<!-- RDV -->
+<div class="module" id="rdvModule">
+  <h2>Rendez-vous / Créneaux</h2>
+  <ul id="rdvList"></ul>
+</div>
+
+<!-- Autres ressources -->
+<div class="module" id="autresModule">
+  <h2>Autres ressources</h2>
+  <ul id="autresList"></ul>
+</div>
+
+<!-- Livrables -->
+<div class="module" id="livrablesModule">
+  <h2>Livrables</h2>
+  <ul id="livrablesList"></ul>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
