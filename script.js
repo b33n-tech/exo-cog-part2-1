@@ -4,15 +4,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const rdvList = document.getElementById("rdvList");
   const autresList = document.getElementById("autresList");
   const livrablesList = document.getElementById("livrablesList");
+
   const uploadJson = document.getElementById("uploadJson");
   const loadBtn = document.getElementById("loadBtn");
   const uploadStatus = document.getElementById("uploadStatus");
+
   const generateMailBtn = document.getElementById("generateMailBtn");
   const mailPromptSelect = document.getElementById("mailPromptSelect");
+
+  const generateLivrableBtn = document.getElementById("generateLivrableBtn");
+  const livrablePromptSelect = document.getElementById("livrablePromptSelect");
 
   const mailPrompts = {
     1: "Écris un email professionnel clair et concis pour :",
     2: "Écris un email amical et léger pour :"
+  };
+
+  const livrablePrompts = {
+    1: "Génère un plan détaillé pour :",
+    2: "Génère un résumé exécutif pour :",
+    3: "Génère une checklist rapide pour :"
   };
 
   let llmData = null;
@@ -92,11 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
     livrablesList.innerHTML = "";
     (llmData.livrables || []).forEach(l => {
       const li = document.createElement("li");
-      li.innerHTML = `<strong>${l.titre}</strong> (${l.type}) `;
-      const btn = document.createElement("button");
-      btn.textContent = "Télécharger Template";
-      btn.addEventListener("click", () => generateTemplate(l));
-      li.appendChild(btn);
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.dataset.titre = l.titre;
+      cb.dataset.type = l.type;
+      li.appendChild(cb);
+      li.appendChild(document.createTextNode(` ${l.titre} (${l.type})`));
       livrablesList.appendChild(li);
     });
   }
@@ -123,45 +135,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Générer Mail GPT
   generateMailBtn.addEventListener("click", () => {
     if (!llmData?.messages) return;
-    const selectedMessages = llmData.messages.filter(m => m.envoyé);
-    if (!selectedMessages.length) { alert("Coche au moins un message !"); return; }
-    const promptId = mailPromptSelect.value;
-    const promptTexte = mailPrompts[promptId];
-    const content = selectedMessages.map(m => `À: ${m.destinataire}\nSujet: ${m.sujet}\nMessage: ${m.texte}`).join("\n\n");
+    const selected = llmData.messages.filter(m => m.envoyé);
+    if (!selected.length) { alert("Coche au moins un message !"); return; }
+    const promptTexte = mailPrompts[mailPromptSelect.value];
+    const content = selected.map(m => `À: ${m.destinataire}\nSujet: ${m.sujet}\nMessage: ${m.texte}`).join("\n\n");
     navigator.clipboard.writeText(`${promptTexte}\n\n${content}`)
-      .then(() => alert("Prompt + messages copiés dans le presse-papiers !"))
-      .catch(err => console.error("Erreur copie: ", err));
+      .then(() => alert("Prompt + messages copiés dans le presse-papiers !"));
     window.open("https://chat.openai.com/", "_blank");
   });
 
-  // Générer livrables sécurisés
-  function generateTemplate(l) {
-    // DOCX simplifié
-    if (l.type === "docx") {
-      const text = (l.template.plan || []).join("\n\n");
-      const blob = new Blob([text], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `${l.titre}.docx`;
-      a.click();
+  // Générer livrable via LLM
+  generateLivrableBtn.addEventListener("click", () => {
+    if (!llmData?.livrables) return;
+    const selected = Array.from(livrablesList.querySelectorAll("input[type=checkbox]:checked"));
+    if (!selected.length) { alert("Coche au moins un livrable !"); return; }
+    const promptTexte = livrablePrompts[livrablePromptSelect.value];
+    const content = selected.map(cb => `${cb.dataset.titre} (${cb.dataset.type})`).join("\n");
+    navigator.clipboard.writeText(`${promptTexte}\n\n${content}`)
+      .then(() => alert("Prompt + livrables copiés dans le presse-papiers !"));
+    window.open("https://chat.openai.com/", "_blank");
+  });
 
-    // PPTX simplifié
-    } else if (l.type === "pptx") {
-      const pptxContent = (l.template.slides || []).map(s => s + "\n").join("\n");
-      const blob = new Blob([pptxContent], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `${l.titre}.pptx`;
-      a.click();
-
-    // XLSX
-    } else if (l.type === "xlsx") {
-      const wb = XLSX.utils.book_new();
-      (l.template.sheets || []).forEach(sheetName => {
-        const ws = XLSX.utils.aoa_to_sheet([[""]]);
-        XLSX.utils.book_append_sheet(wb, ws, sheetName);
-      });
-      XLSX.writeFile(wb, `${l.titre}.xlsx`);
-    }
-  }
 });
