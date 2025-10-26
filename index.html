@@ -6,21 +6,24 @@
 <title>Exo-Cog Partie 2</title>
 <link rel="stylesheet" href="style.css">
 
-<!-- DOCX -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.6.0/docx.min.js"></script>
+<!-- Docxtemplater + PizZip -->
+<script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.6/dist/pizzip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.27.0/build/docxtemplater.js"></script>
 
-<!-- PPTX -->
+<!-- PPTXGenJS -->
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.10.0/dist/pptxgen.min.js"></script>
 
 <!-- XLSX -->
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<!-- FileSaver (pour Docxtemplater) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 </head>
 <body>
 
 <h1>Exo-Cog – Partie 2</h1>
 
-<!-- Upload JSON -->
 <div class="module" id="uploadModule">
   <h2>Charger JSON LLM</h2>
   <div class="upload-container">
@@ -30,13 +33,11 @@
   <p id="uploadStatus"></p>
 </div>
 
-<!-- Jalons -->
 <div class="module" id="jalonsModule">
   <h2>Jalons & Sous-actions</h2>
   <ul id="jalonsList"></ul>
 </div>
 
-<!-- Messages -->
 <div class="module" id="messagesModule">
   <h2>Messages / Emails</h2>
   <table id="messagesTable">
@@ -54,19 +55,16 @@
   </div>
 </div>
 
-<!-- RDV -->
 <div class="module" id="rdvModule">
   <h2>Rendez-vous / Créneaux</h2>
   <ul id="rdvList"></ul>
 </div>
 
-<!-- Autres ressources -->
 <div class="module" id="autresModule">
   <h2>Autres ressources</h2>
   <ul id="autresList"></ul>
 </div>
 
-<!-- Livrables -->
 <div class="module" id="livrablesModule">
   <h2>Livrables</h2>
   <ul id="livrablesList"></ul>
